@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+//#include "juce_dsp/juce_dsp.h"
 
 //==============================================================================
 SimpleEQAudioProcessor::SimpleEQAudioProcessor()
@@ -95,6 +96,18 @@ void SimpleEQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    
+    
+    juce::dsp::ProcessSpec spec;
+    
+    spec.maximumBlockSize = samplesPerBlock;
+    
+    spec.numChannels = 1;
+    
+    spec.sampleRate = sampleRate;
+    
+    leftChain.prepare(spec);
+    rightChain.prepare(spec);
 }
 
 void SimpleEQAudioProcessor::releaseResources()
@@ -167,7 +180,7 @@ bool SimpleEQAudioProcessor::hasEditor() const
 juce::AudioProcessorEditor* SimpleEQAudioProcessor::createEditor()
 {
 //    return new SimpleEQAudioProcessorEditor (*this);
-  return new juce::GenericAudioProcessorEditor(*this);
+    return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
