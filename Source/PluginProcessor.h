@@ -21,6 +21,7 @@ public:
     ~SimpleEQAudioProcessor() override;
 
     //==============================================================================
+    // Prepares it to get run by DAW
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
@@ -28,6 +29,7 @@ public:
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
    #endif
 
+    // does the processing, keep it running
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
     //==============================================================================
@@ -52,6 +54,10 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+  
+    static juce::AudioProcessorValueTreeState::ParameterLayout
+      createParameterLayout();
+    juce::AudioProcessorValueTreeState apvts {*this, nullptr, "Parameters", createParameterLayout()};
 
 private:
     //==============================================================================
